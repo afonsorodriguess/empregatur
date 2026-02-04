@@ -56,6 +56,22 @@
         justify-items: center;
       }
 
+      fieldset {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        margin: 0;
+        grid-column: 1 / -1;
+      }
+
+      legend {
+        font-weight: 700;
+        font-size: 14px;
+        padding: 0 8px;
+        color: #111827;
+      }
+
       label {
         font-weight: 600;
         margin-bottom: 6px;
@@ -84,12 +100,80 @@
 
       .field {
         width: 100%;
-        max-width: 210px;
+        max-width: 240px;
       }
 
       .full-width {
         grid-column: 1 / -1;
         width: 100%;
+      }
+
+      .field-wide {
+        max-width: 100%;
+      }
+
+      .field-group {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-items: center;
+      }
+
+      .options {
+        display: grid;
+        gap: 8px;
+        text-align: left;
+      }
+
+      .options label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      .options input {
+        width: auto;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 96px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+        resize: vertical;
+      }
+
+      select {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+        background: #ffffff;
+      }
+
+      .message {
+        grid-column: 1 / -1;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        text-align: left;
+        display: none;
+      }
+
+      .message.error {
+        display: block;
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .message.success {
+        display: block;
+        background: #dcfce7;
+        color: #166534;
       }
 
       button {
@@ -133,32 +217,10 @@
         background: #e5e7eb;
       }
 
-      .social-buttons {
-        display: grid;
-        gap: 10px;
-        justify-items: center;
-      }
-
+      .divider,
+      .social-buttons,
       .social-button {
-        width: 100%;
-        max-width: 280px;
-        padding: 8px 12px;
-        border-radius: 10px;
-        border: 1px solid #d1d5db;
-        background: #ffffff;
-        color: #111827;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-
-      .social-button:hover {
-        border-color: #c7c9d1;
-        box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+        display: none;
       }
     </style>
   </head>
@@ -167,64 +229,213 @@
       <div class="company-name">EMPREGATUR</div>
       <h1>Cadastro</h1>
       <p>Preencha seus dados para concluir o cadastro.</p>
-      <form>
-        <div class="row">
-          <div class="field">
-            <label for="nome">Nome</label>
-            <input id="nome" name="nome" type="text" placeholder="Ex: Ana" required />
+      <form id="cadastro-form" novalidate>
+        <div id="form-message" class="message" role="alert" aria-live="polite"></div>
+        <fieldset>
+          <legend>1. Dados pessoais</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="nome-completo">Nome completo</label>
+              <input id="nome-completo" name="nome-completo" type="text" placeholder="Ex: Ana Silva" required />
+            </div>
+            <div class="field">
+              <label for="cpf">CPF</label>
+              <input
+                id="cpf"
+                name="cpf"
+                type="text"
+                inputmode="numeric"
+                placeholder="000.000.000-00"
+                maxlength="14"
+                pattern="\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}"
+                required
+              />
+              <div class="hint">Formato: 000.000.000-00</div>
+            </div>
+            <div class="field">
+              <label for="data-nascimento">Data de nascimento</label>
+              <input id="data-nascimento" name="data-nascimento" type="date" required />
+            </div>
+            <div class="field field-wide">
+              <label>Gênero (opcional)</label>
+              <div class="options">
+                <label><input type="radio" name="genero" value="masculino" />Masculino</label>
+                <label><input type="radio" name="genero" value="feminino" />Feminino</label>
+                <label><input type="radio" name="genero" value="outro" />Outro</label>
+                <label><input type="radio" name="genero" value="nao-informar" />Prefiro não informar</label>
+              </div>
+            </div>
           </div>
-          <div class="field">
-            <label for="sobrenome">Sobrenome</label>
-            <input id="sobrenome" name="sobrenome" type="text" placeholder="Ex: Silva" required />
+        </fieldset>
+        <fieldset>
+          <legend>2. Profissão</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="profissao">Profissão principal</label>
+              <select id="profissao" name="profissao" required>
+                <option value="">Selecione</option>
+                <option value="Recepcionista">Recepcionista</option>
+                <option value="Garcom">Garçom/Garçonete</option>
+                <option value="Cozinheiro">Cozinheiro(a)</option>
+                <option value="Auxiliar de cozinha">Auxiliar de cozinha</option>
+                <option value="Camareiro">Camareiro(a)</option>
+                <option value="Guia turistico">Guia turístico</option>
+                <option value="Atendente">Atendente</option>
+                <option value="Barman">Barman</option>
+                <option value="Servicos gerais">Serviços gerais</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="experiencia">Tempo de experiência</label>
+              <select id="experiencia" name="experiencia">
+                <option value="">Selecione</option>
+                <option value="Sem experiencia">Sem experiência</option>
+                <option value="Ate 6 meses">Até 6 meses</option>
+                <option value="6 meses a 1 ano">6 meses a 1 ano</option>
+                <option value="1 a 3 anos">1 a 3 anos</option>
+                <option value="Mais de 3 anos">Mais de 3 anos</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="cpf">CPF</label>
-            <input
-              id="cpf"
-              name="cpf"
-              type="text"
-              inputmode="numeric"
-              placeholder="000.000.000-00"
-              maxlength="14"
-              pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
-              required
-            />
-            <div class="hint">Formato: 000.000.000-00</div>
+        </fieldset>
+        <fieldset>
+          <legend>3. Contato</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="telefone">Telefone (com DDD)</label>
+              <input
+                id="telefone"
+                name="telefone"
+                type="tel"
+                placeholder="(00) 00000-0000"
+                inputmode="tel"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="whatsapp">WhatsApp (opcional)</label>
+              <input
+                id="whatsapp"
+                name="whatsapp"
+                type="tel"
+                placeholder="(00) 00000-0000"
+                inputmode="tel"
+              />
+              <div class="options">
+                <label><input id="whatsapp-mesmo" type="checkbox" />Usar o mesmo número do telefone</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="email-contato">E-mail</label>
+              <input id="email-contato" name="email-contato" type="email" placeholder="voce@email.com" required />
+            </div>
           </div>
-          <div class="field">
-            <label for="data-nascimento">Data de nascimento</label>
-            <input id="data-nascimento" name="data-nascimento" type="date" required />
+        </fieldset>
+        <fieldset>
+          <legend>4. Endereço</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="cidade">Cidade</label>
+              <input id="cidade" name="cidade" type="text" placeholder="Ex: Curitiba" required />
+            </div>
+            <div class="field">
+              <label for="estado">Estado (UF)</label>
+              <select id="estado" name="estado" required>
+                <option value="">Selecione</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="field">
-            <label for="contato">Contato</label>
-            <input
-              id="contato"
-              name="contato"
-              type="tel"
-              placeholder="(00) 00000-0000"
-              inputmode="tel"
-              required
-            />
+        </fieldset>
+        <fieldset>
+          <legend>5. Acesso ao sistema</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="email-acesso">E-mail de acesso</label>
+              <input id="email-acesso" name="email-acesso" type="email" placeholder="acesso@email.com" required />
+            </div>
+            <div class="field">
+              <label for="senha">Senha</label>
+              <input id="senha" name="senha" type="password" minlength="8" required />
+            </div>
+            <div class="field">
+              <label for="confirmar-senha">Confirmar senha</label>
+              <input id="confirmar-senha" name="confirmar-senha" type="password" minlength="8" required />
+            </div>
           </div>
-          <div class="field">
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="voce@email.com" required />
+        </fieldset>
+        <fieldset>
+          <legend>6. Informações adicionais (opcional)</legend>
+          <div class="field-group">
+            <div class="field field-wide">
+              <label for="resumo">Resumo profissional</label>
+              <textarea id="resumo" name="resumo" maxlength="300" placeholder="Fale brevemente sobre sua experiência."></textarea>
+              <div class="hint">Até 300 caracteres.</div>
+            </div>
+            <div class="field field-wide">
+              <label>Disponibilidade de horário</label>
+              <div class="options">
+                <label><input type="checkbox" name="disponibilidade" value="manha" />Manhã</label>
+                <label><input type="checkbox" name="disponibilidade" value="tarde" />Tarde</label>
+                <label><input type="checkbox" name="disponibilidade" value="noite" />Noite</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="foto">Foto de perfil (upload opcional)</label>
+              <input id="foto" name="foto" type="file" accept="image/*" />
+            </div>
           </div>
-        </div>
-        <button class="full-width" type="submit">Cadastrar</button>
-        <div class="divider full-width">ou</div>
-        <div class="social-buttons full-width">
-          <button class="social-button" type="button">Cadastrar com Google</button>
-          <button class="social-button" type="button">Cadastrar com Facebook</button>
-        </div>
+        </fieldset>
+        <fieldset>
+          <legend>7. Termos e confirmação</legend>
+          <div class="field-group">
+            <div class="field field-wide">
+              <label class="options">
+                <input id="termos" type="checkbox" required />
+                Aceite dos termos de uso e política de privacidade
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <button class="full-width" type="submit">Cadastrar usuário</button>
       </form>
     </main>
     <script>
+      const form = document.querySelector("#cadastro-form");
       const cpfInput = document.querySelector("#cpf");
+      const messageBox = document.querySelector("#form-message");
+      const senhaInput = document.querySelector("#senha");
+      const confirmarSenhaInput = document.querySelector("#confirmar-senha");
+      const whatsappInput = document.querySelector("#whatsapp");
+      const telefoneInput = document.querySelector("#telefone");
+      const whatsappMesmo = document.querySelector("#whatsapp-mesmo");
 
       const formatCpf = (value) => {
         const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -248,8 +459,82 @@
         return formatted;
       };
 
+      const isValidCpf = (cpf) => {
+        const digits = cpf.replace(/\D/g, "");
+        if (digits.length !== 11 || /^(\d)\1{10}$/.test(digits)) {
+          return false;
+        }
+
+        const calcCheck = (base, factor) => {
+          let total = 0;
+          for (let i = 0; i < base.length; i += 1) {
+            total += Number(base[i]) * (factor - i);
+          }
+          const remainder = (total * 10) % 11;
+          return remainder === 10 ? 0 : remainder;
+        };
+
+        const firstCheck = calcCheck(digits.slice(0, 9), 10);
+        const secondCheck = calcCheck(digits.slice(0, 10), 11);
+        return firstCheck === Number(digits[9]) && secondCheck === Number(digits[10]);
+      };
+
       cpfInput.addEventListener("input", (event) => {
         event.target.value = formatCpf(event.target.value);
+      });
+
+      whatsappMesmo.addEventListener("change", (event) => {
+        if (event.target.checked) {
+          whatsappInput.value = telefoneInput.value;
+        }
+      });
+
+      telefoneInput.addEventListener("input", () => {
+        if (whatsappMesmo.checked) {
+          whatsappInput.value = telefoneInput.value;
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const errors = [];
+
+        messageBox.classList.remove("error", "success");
+        messageBox.textContent = "";
+
+        const requiredFields = form.querySelectorAll("[required]");
+        requiredFields.forEach((field) => {
+          if (field.type === "checkbox" && !field.checked) {
+            errors.push("Aceite os termos de uso e política de privacidade.");
+          } else if (!field.value) {
+            const label = form.querySelector(`label[for="${field.id}"]`);
+            errors.push(`Preencha o campo: ${label ? label.textContent : field.name}.`);
+          }
+        });
+
+        if (cpfInput.value && !isValidCpf(cpfInput.value)) {
+          errors.push("CPF inválido. Verifique o formato e os números.");
+        }
+
+        if (senhaInput.value.length < 8) {
+          errors.push("A senha deve ter pelo menos 8 caracteres.");
+        }
+
+        if (senhaInput.value !== confirmarSenhaInput.value) {
+          errors.push("As senhas não conferem.");
+        }
+
+        if (errors.length > 0) {
+          messageBox.classList.add("error");
+          messageBox.innerHTML = `<strong>Corrija os erros abaixo:</strong><ul>${errors
+            .map((error) => `<li>${error}</li>`)
+            .join("")}</ul>`;
+          return;
+        }
+
+        messageBox.classList.add("success");
+        messageBox.textContent = "Cadastro realizado com sucesso!";
+        form.reset();
       });
     </script>
   </body>
