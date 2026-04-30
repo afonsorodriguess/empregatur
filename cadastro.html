@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tela de Cadastro</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f6fb;
+        color: #1f1f1f;
+      }
+
+      body {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .card {
+        width: min(560px, 100%);
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+        text-align: center;
+      }
+
+      .company-name {
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: #4f46e5;
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 26px;
+      }
+
+      p {
+        margin: 0 0 24px;
+        color: #525252;
+      }
+
+      form {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+      }
+
+      fieldset {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        margin: 0;
+        grid-column: 1 / -1;
+      }
+
+      legend {
+        font-weight: 700;
+        font-size: 14px;
+        padding: 0 8px;
+        color: #111827;
+      }
+
+      label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: inline-block;
+        text-align: center;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+        transition: border 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+
+      .row {
+        display: contents;
+      }
+
+      .field {
+        width: 100%;
+        max-width: 240px;
+      }
+
+      .full-width {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+
+      .field-wide {
+        max-width: 100%;
+      }
+
+      .field-group {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+      }
+
+      .options {
+        display: grid;
+        gap: 8px;
+        text-align: left;
+      }
+
+      .options label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      .options input {
+        width: auto;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 96px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+        resize: vertical;
+      }
+
+      select {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 13px;
+        background: #ffffff;
+      }
+
+      .message {
+        grid-column: 1 / -1;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        text-align: left;
+        display: none;
+      }
+
+      .message.error {
+        display: block;
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .message.success {
+        display: block;
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .muted {
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .button-secondary {
+        background: #ffffff;
+        color: #1f2937;
+        border: 1px solid #d1d5db;
+      }
+
+      .button-secondary:hover {
+        box-shadow: 0 6px 12px rgba(15, 23, 42, 0.08);
+      }
+
+      .profissao-card {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px dashed #d1d5db;
+        display: grid;
+        gap: 12px;
+      }
+
+      .profissao-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .profissao-header h3 {
+        margin: 0;
+        font-size: 14px;
+        text-align: left;
+      }
+
+      @media (min-width: 720px) {
+        form {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .field-group {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      button {
+        margin-top: 4px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 10px;
+        background: #4f46e5;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 16px rgba(79, 70, 229, 0.25);
+      }
+
+      .hint {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 4px;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 4px 0;
+        color: #6b7280;
+        font-size: 12px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #e5e7eb;
+      }
+
+      .divider,
+      .social-buttons,
+      .social-button {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="company-name">EMPREGATUR</div>
+      <h1>Cadastro</h1>
+      <p>Preencha seus dados para concluir o cadastro.</p>
+      <form id="cadastro-form" novalidate>
+        <div id="form-message" class="message" role="alert" aria-live="polite"></div>
+        <fieldset>
+          <legend>1. Dados pessoais</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="nome-completo">Nome completo</label>
+              <input id="nome-completo" name="nome-completo" type="text" placeholder="Ex: Ana Silva" required />
+            </div>
+            <div class="field">
+              <label for="cpf">CPF</label>
+              <input
+                id="cpf"
+                name="cpf"
+                type="text"
+                inputmode="numeric"
+                placeholder="000.000.000-00"
+                maxlength="14"
+                pattern="\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}"
+                required
+              />
+              <div class="hint">Formato: 000.000.000-00</div>
+            </div>
+            <div class="field">
+              <label for="data-nascimento">Data de nascimento</label>
+              <input id="data-nascimento" name="data-nascimento" type="date" required />
+            </div>
+            <div class="field field-wide">
+              <label>Gênero (opcional)</label>
+              <div class="options">
+                <label><input type="radio" name="genero" value="masculino" />Masculino</label>
+                <label><input type="radio" name="genero" value="feminino" />Feminino</label>
+                <label><input type="radio" name="genero" value="outro" />Outro</label>
+                <label><input type="radio" name="genero" value="nao-informar" />Prefiro não informar</label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>2. Profissões</legend>
+          <div class="field-group">
+            <div class="field field-wide">
+              <p class="muted">
+                Informe sua profissão atual e, se desejar, adicione profissões anteriores com seus resumos.
+              </p>
+            </div>
+            <div class="field field-wide profissao-card">
+              <div class="profissao-header">
+                <h3>2.1 Profissão atual</h3>
+              </div>
+              <div class="field-group">
+                <div class="field">
+                  <label for="profissao-atual">Profissão atual</label>
+                  <select id="profissao-atual" name="profissao-atual" required>
+                    <option value="">Selecione</option>
+                    <option value="Recepcionista">Recepcionista</option>
+                    <option value="Garcom">Garçom/Garçonete</option>
+                    <option value="Cozinheiro">Cozinheiro(a)</option>
+                    <option value="Auxiliar de cozinha">Auxiliar de cozinha</option>
+                    <option value="Camareiro">Camareiro(a)</option>
+                    <option value="Guia turistico">Guia turístico</option>
+                    <option value="Atendente">Atendente</option>
+                    <option value="Barman">Barman</option>
+                    <option value="Servicos gerais">Serviços gerais</option>
+                    <option value="Outro">Outro</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="experiencia-atual">Tempo de experiência</label>
+                  <select id="experiencia-atual" name="experiencia-atual">
+                    <option value="">Selecione</option>
+                    <option value="Sem experiencia">Sem experiência</option>
+                    <option value="Ate 6 meses">Até 6 meses</option>
+                    <option value="6 meses a 1 ano">6 meses a 1 ano</option>
+                    <option value="1 a 3 anos">1 a 3 anos</option>
+                    <option value="Mais de 3 anos">Mais de 3 anos</option>
+                  </select>
+                </div>
+                <div class="field field-wide">
+                  <label for="resumo-atual">Resumo profissional da profissão atual</label>
+                  <textarea
+                    id="resumo-atual"
+                    name="resumo-atual"
+                    maxlength="300"
+                    placeholder="Descreva suas atividades exercidas no cargo."
+                  ></textarea>
+                  <div class="hint">Até 300 caracteres.</div>
+                </div>
+              </div>
+            </div>
+            <div class="field field-wide profissao-card">
+              <div class="profissao-header">
+                <h3>2.2 Profissões anteriores</h3>
+                <button class="button-secondary" id="add-profissao" type="button">Adicionar profissão anterior</button>
+              </div>
+              <div id="profissoes-anteriores" class="field-group"></div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>3. Contato</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="telefone">Telefone (com DDD)</label>
+              <input
+                id="telefone"
+                name="telefone"
+                type="tel"
+                placeholder="(00) 00000-0000"
+                inputmode="tel"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="whatsapp">WhatsApp (opcional)</label>
+              <input
+                id="whatsapp"
+                name="whatsapp"
+                type="tel"
+                placeholder="(00) 00000-0000"
+                inputmode="tel"
+              />
+              <div class="options">
+                <label><input id="whatsapp-mesmo" type="checkbox" />Usar o mesmo número do telefone</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="email-contato">E-mail</label>
+              <input id="email-contato" name="email-contato" type="email" placeholder="voce@email.com" required />
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>4. Endereço</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="cidade">Cidade</label>
+              <input id="cidade" name="cidade" type="text" placeholder="Ex: Curitiba" required />
+            </div>
+            <div class="field">
+              <label for="estado">Estado (UF)</label>
+              <select id="estado" name="estado" required>
+                <option value="">Selecione</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>5. Acesso ao sistema</legend>
+          <div class="field-group">
+            <div class="field">
+              <label for="email-acesso">E-mail de acesso</label>
+              <input id="email-acesso" name="email-acesso" type="email" placeholder="acesso@email.com" required />
+            </div>
+            <div class="field">
+              <label for="senha">Senha</label>
+              <input id="senha" name="senha" type="password" minlength="8" required />
+            </div>
+            <div class="field">
+              <label for="confirmar-senha">Confirmar senha</label>
+              <input id="confirmar-senha" name="confirmar-senha" type="password" minlength="8" required />
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>6. Currículo</legend>
+          <div class="field-group">
+            <div class="field field-wide">
+              <label for="curriculo">Anexar currículo (opcional)</label>
+              <input id="curriculo" name="curriculo" type="file" accept=".pdf,.doc,.docx" />
+              <div class="hint">Formatos permitidos: PDF, DOC, DOCX. Tamanho máximo: 5 MB.</div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>7. Termos e confirmação</legend>
+          <div class="field-group">
+            <div class="field field-wide">
+              <label class="options">
+                <input id="termos" type="checkbox" required />
+                Aceite dos termos de uso e política de privacidade
+              </label>
+            </div>
+          </div>
+        </fieldset>
+        <button class="full-width" type="submit">Cadastrar usuário</button>
+      </form>
+    </main>
+    <script>
+      const form = document.querySelector("#cadastro-form");
+      const cpfInput = document.querySelector("#cpf");
+      const messageBox = document.querySelector("#form-message");
+      const senhaInput = document.querySelector("#senha");
+      const confirmarSenhaInput = document.querySelector("#confirmar-senha");
+      const whatsappInput = document.querySelector("#whatsapp");
+      const telefoneInput = document.querySelector("#telefone");
+      const whatsappMesmo = document.querySelector("#whatsapp-mesmo");
+      const addProfissaoButton = document.querySelector("#add-profissao");
+      const profissoesContainer = document.querySelector("#profissoes-anteriores");
+      const curriculoInput = document.querySelector("#curriculo");
+      const maxCurriculoSize = 5 * 1024 * 1024;
+
+      const formatCpf = (value) => {
+        const digits = value.replace(/\D/g, "").slice(0, 11);
+        const parts = [];
+
+        if (digits.length > 0) {
+          parts.push(digits.slice(0, 3));
+        }
+        if (digits.length > 3) {
+          parts.push(digits.slice(3, 6));
+        }
+        if (digits.length > 6) {
+          parts.push(digits.slice(6, 9));
+        }
+
+        let formatted = parts.join(".");
+        if (digits.length > 9) {
+          formatted += `-${digits.slice(9, 11)}`;
+        }
+
+        return formatted;
+      };
+
+      const isValidCpf = (cpf) => {
+        const digits = cpf.replace(/\D/g, "");
+        if (digits.length !== 11 || /^(\d)\1{10}$/.test(digits)) {
+          return false;
+        }
+
+        const calcCheck = (base, factor) => {
+          let total = 0;
+          for (let i = 0; i < base.length; i += 1) {
+            total += Number(base[i]) * (factor - i);
+          }
+          const remainder = (total * 10) % 11;
+          return remainder === 10 ? 0 : remainder;
+        };
+
+        const firstCheck = calcCheck(digits.slice(0, 9), 10);
+        const secondCheck = calcCheck(digits.slice(0, 10), 11);
+        return firstCheck === Number(digits[9]) && secondCheck === Number(digits[10]);
+      };
+
+      cpfInput.addEventListener("input", (event) => {
+        event.target.value = formatCpf(event.target.value);
+      });
+
+      whatsappMesmo.addEventListener("change", (event) => {
+        if (event.target.checked) {
+          whatsappInput.value = telefoneInput.value;
+        }
+      });
+
+      telefoneInput.addEventListener("input", () => {
+        if (whatsappMesmo.checked) {
+          whatsappInput.value = telefoneInput.value;
+        }
+      });
+
+      const addProfissaoAnterior = () => {
+        const index = profissoesContainer.children.length + 1;
+        const wrapper = document.createElement("div");
+        wrapper.className = "field field-wide profissao-card";
+        wrapper.innerHTML = `
+          <div class="profissao-header">
+            <h3>Profissão anterior ${index}</h3>
+            <button class="button-secondary" type="button" data-remove>Remover</button>
+          </div>
+          <div class="field-group">
+            <div class="field">
+              <label>Nome da profissão</label>
+              <select name="profissao-anterior-${index}">
+                <option value="">Selecione</option>
+                <option value="Recepcionista">Recepcionista</option>
+                <option value="Garcom">Garçom/Garçonete</option>
+                <option value="Cozinheiro">Cozinheiro(a)</option>
+                <option value="Auxiliar de cozinha">Auxiliar de cozinha</option>
+                <option value="Camareiro">Camareiro(a)</option>
+                <option value="Guia turistico">Guia turístico</option>
+                <option value="Atendente">Atendente</option>
+                <option value="Barman">Barman</option>
+                <option value="Servicos gerais">Serviços gerais</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Tempo de experiência</label>
+              <select name="experiencia-anterior-${index}">
+                <option value="">Selecione</option>
+                <option value="Sem experiencia">Sem experiência</option>
+                <option value="Ate 6 meses">Até 6 meses</option>
+                <option value="6 meses a 1 ano">6 meses a 1 ano</option>
+                <option value="1 a 3 anos">1 a 3 anos</option>
+                <option value="Mais de 3 anos">Mais de 3 anos</option>
+              </select>
+            </div>
+            <div class="field field-wide">
+              <label>Resumo profissional</label>
+              <textarea
+                name="resumo-anterior-${index}"
+                maxlength="300"
+                placeholder="Descreva suas atividades exercidas no cargo."
+              ></textarea>
+              <div class="hint">Até 300 caracteres.</div>
+            </div>
+          </div>
+        `;
+        wrapper.querySelector("[data-remove]").addEventListener("click", () => {
+          wrapper.remove();
+        });
+        profissoesContainer.appendChild(wrapper);
+      };
+
+      addProfissaoButton.addEventListener("click", addProfissaoAnterior);
+
+      const validateCurriculo = () => {
+        const file = curriculoInput.files[0];
+        if (!file) {
+          return "";
+        }
+        const allowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+        if (!allowed.includes(file.type)) {
+          return "Formato de currículo inválido. Use PDF, DOC ou DOCX.";
+        }
+        if (file.size > maxCurriculoSize) {
+          return "Currículo excede o tamanho máximo de 5 MB.";
+        }
+        return "";
+      };
+
+      curriculoInput.addEventListener("change", () => {
+        const error = validateCurriculo();
+        if (error) {
+          messageBox.classList.add("error");
+          messageBox.classList.remove("success");
+          messageBox.textContent = error;
+        } else if (messageBox.classList.contains("error")) {
+          messageBox.textContent = "";
+          messageBox.classList.remove("error");
+        }
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const errors = [];
+
+        messageBox.classList.remove("error", "success");
+        messageBox.textContent = "";
+
+        const requiredFields = form.querySelectorAll("[required]");
+        requiredFields.forEach((field) => {
+          if (field.type === "checkbox" && !field.checked) {
+            errors.push("Aceite os termos de uso e política de privacidade.");
+          } else if (!field.value) {
+            const label = form.querySelector(`label[for="${field.id}"]`);
+            errors.push(`Preencha o campo: ${label ? label.textContent : field.name}.`);
+          }
+        });
+
+        if (cpfInput.value && !isValidCpf(cpfInput.value)) {
+          errors.push("CPF inválido. Verifique o formato e os números.");
+        }
+
+        if (senhaInput.value.length < 8) {
+          errors.push("A senha deve ter pelo menos 8 caracteres.");
+        }
+
+        if (senhaInput.value !== confirmarSenhaInput.value) {
+          errors.push("As senhas não conferem.");
+        }
+
+        const curriculoError = validateCurriculo();
+        if (curriculoError) {
+          errors.push(curriculoError);
+        }
+
+        if (errors.length > 0) {
+          messageBox.classList.add("error");
+          messageBox.innerHTML = `<strong>Corrija os erros abaixo:</strong><ul>${errors
+            .map((error) => `<li>${error}</li>`)
+            .join("")}</ul>`;
+          return;
+        }
+
+        messageBox.classList.add("success");
+        messageBox.textContent = "Cadastro realizado com sucesso!";
+        form.reset();
+        profissoesContainer.innerHTML = "";
+      });
+    </script>
+  </body>
+</html>
