@@ -1,20 +1,531 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Empregatur</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vagas em Swipe</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+        background-color: #f3f4f8;
+        color: #171926;
+      }
 
-<h1>FUNCIONANDO AGORA</h1>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-<a href="cadastro.html">
-  <button>Ir para cadastro</button>
-</a>
+      body {
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #ffffff 0%, #f3f4f8 45%, #eceff6 100%);
+        padding: 32px 24px 48px;
+      }
 
-<a href="empresa.html">
-  <button>Cadastrar empresa</button>
-</a>
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1100px;
+        margin: 0 auto 32px;
+      }
 
-</body>
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .brand__dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff6b6b, #ff9f1c);
+      }
+
+      .topbar__actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      .icon-button {
+        border: none;
+        background: #ffffff;
+        border-radius: 999px;
+        padding: 8px 16px;
+        font-weight: 600;
+        box-shadow: 0 12px 24px rgba(23, 25, 38, 0.08);
+        cursor: pointer;
+      }
+
+      .layout {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        gap: 32px;
+      }
+
+      .intro {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .intro h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .intro p {
+        color: #4a4f63;
+        max-width: 620px;
+        line-height: 1.6;
+      }
+
+      .intro__legend {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .intro__legend div {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-weight: 600;
+        color: #3b3f52;
+      }
+
+      .pill {
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        color: #ffffff;
+      }
+
+      .pill--danger {
+        background: #ff6b6b;
+      }
+
+      .pill--success {
+        background: #2ec4b6;
+      }
+
+      .card-stack {
+        display: flex;
+        justify-content: center;
+      }
+
+      .job-card {
+        width: min(720px, 100%);
+        background: #ffffff;
+        border-radius: 28px;
+        box-shadow: 0 24px 60px rgba(23, 25, 38, 0.15);
+        overflow: hidden;
+        position: relative;
+        touch-action: pan-y;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        cursor: grab;
+      }
+
+      .job-card.is-dragging {
+        cursor: grabbing;
+      }
+
+      .job-card__overlay {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        justify-content: space-between;
+        pointer-events: none;
+      }
+
+      .swipe-tag {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .swipe-tag--like {
+        background: rgba(46, 196, 182, 0.15);
+        color: #2ec4b6;
+        border: 1px solid rgba(46, 196, 182, 0.4);
+      }
+
+      .swipe-tag--nope {
+        background: rgba(255, 107, 107, 0.15);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 107, 107, 0.4);
+      }
+
+      .swipe-tag.is-visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .job-card__media {
+        position: relative;
+        height: 220px;
+      }
+
+      .job-card__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .job-card__badge {
+        position: absolute;
+        bottom: 16px;
+        left: 16px;
+        background: rgba(23, 25, 38, 0.85);
+        color: #ffffff;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+      }
+
+      .job-card__content {
+        padding: 24px 28px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .job-card__header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .job-card__header h2 {
+        font-size: 1.5rem;
+      }
+
+      .job-card__company {
+        color: #5a6075;
+        font-weight: 600;
+      }
+
+      .job-card__salary {
+        align-self: flex-start;
+        background: #f4f5ff;
+        color: #4b4fe2;
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+
+      .job-card__description {
+        color: #4a4f63;
+        line-height: 1.6;
+      }
+
+      .job-card__details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+      }
+
+      .label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #8a90a8;
+        margin-bottom: 6px;
+      }
+
+      .job-card__details strong {
+        font-size: 0.95rem;
+      }
+
+      .job-card__actions {
+        display: flex;
+        gap: 18px;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .action {
+        width: 68px;
+        height: 68px;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 22px rgba(23, 25, 38, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 24px rgba(23, 25, 38, 0.16);
+      }
+
+      .action--dislike {
+        background: #fff1f1;
+        color: #ff6b6b;
+      }
+
+      .action--like {
+        background: #e7fbf7;
+        color: #2ec4b6;
+      }
+
+      .flow {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 24px 28px;
+        box-shadow: 0 16px 32px rgba(23, 25, 38, 0.08);
+      }
+
+      .flow h3 {
+        font-size: 1.25rem;
+        margin-bottom: 16px;
+      }
+
+      .flow__steps {
+        display: grid;
+        gap: 12px;
+        color: #4a4f63;
+        line-height: 1.6;
+        padding-left: 18px;
+      }
+
+      @media (min-width: 900px) {
+        .layout {
+          grid-template-columns: minmax(260px, 1fr) minmax(360px, 2fr);
+          grid-template-areas:
+            "intro card"
+            "flow card";
+          align-items: start;
+        }
+
+        .intro {
+          grid-area: intro;
+        }
+
+        .card-stack {
+          grid-area: card;
+        }
+
+        .flow {
+          grid-area: flow;
+        }
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 24px 16px 40px;
+        }
+
+        .topbar {
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .job-card__content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand__dot"></span>
+        <span class="brand__name">Match Vagas</span>
+      </div>
+      <div class="topbar__actions">
+        <button class="icon-button" type="button" aria-label="Filtros">
+          <span>Filtros</span>
+        </button>
+        <button class="icon-button" type="button" aria-label="Perfil">
+          <span>Perfil</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="intro">
+        <h1>Escolha vagas com um swipe</h1>
+        <p>
+          Arraste para a esquerda para dispensar, ou para a direita para se candidatar
+          automaticamente com seu histórico profissional.
+        </p>
+        <div class="intro__legend">
+          <div>
+            <span class="pill pill--danger">Esquerda</span>
+            <span>Sem interesse</span>
+          </div>
+          <div>
+            <span class="pill pill--success">Direita</span>
+            <span>Candidatura rápida</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card-stack">
+        <article class="job-card" id="job-card" aria-live="polite">
+          <div class="job-card__overlay" aria-hidden="true">
+            <span class="swipe-tag swipe-tag--nope" id="swipe-nope">NÃO CURTI</span>
+            <span class="swipe-tag swipe-tag--like" id="swipe-like">CURTI</span>
+          </div>
+          <div class="job-card__media">
+            <img
+              src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80"
+              alt="Equipe trabalhando em escritório"
+            />
+            <div class="job-card__badge">Vaga em destaque</div>
+          </div>
+
+          <div class="job-card__content">
+            <header class="job-card__header">
+              <div>
+                <h2>Product Designer Pleno</h2>
+                <p class="job-card__company">Studio Aurora • Tecnologia</p>
+              </div>
+              <div class="job-card__salary">R$ 8.500 – R$ 10.000</div>
+            </header>
+
+            <p class="job-card__description">
+              Buscamos alguém com experiência em design de produtos digitais, pesquisa com
+              usuários e prototipação rápida para liderar melhorias na jornada do candidato.
+            </p>
+
+            <div class="job-card__details">
+              <div>
+                <span class="label">Localização</span>
+                <strong>São Paulo, SP (Híbrido)</strong>
+              </div>
+              <div>
+                <span class="label">Contato</span>
+                <strong>(11) 99999-0000</strong>
+              </div>
+              <div>
+                <span class="label">Tipo</span>
+                <strong>CLT • Tempo integral</strong>
+              </div>
+            </div>
+
+            <div class="job-card__actions">
+              <button class="action action--dislike" type="button" aria-label="Não gostei da vaga">✕</button>
+              <button class="action action--like" type="button" aria-label="Gostei da vaga">❤</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="flow">
+        <h3>Como funciona o match com empresas</h3>
+        <ol class="flow__steps">
+          <li>Você curte a vaga ao arrastar para a direita.</li>
+          <li>Sua candidatura é registrada no banco da empresa.</li>
+          <li>A empresa analisa seu perfil e curte se houver compatibilidade.</li>
+          <li>Um bate-papo é liberado para marcar entrevistas.</li>
+        </ol>
+      </section>
+    </main>
+
+    <script>
+      const card = document.getElementById("job-card");
+      const likeTag = document.getElementById("swipe-like");
+      const nopeTag = document.getElementById("swipe-nope");
+      const likeButton = document.querySelector(".action--like");
+      const dislikeButton = document.querySelector(".action--dislike");
+      let startX = 0;
+      let currentX = 0;
+      let isDragging = false;
+
+      const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+      const resetCard = () => {
+        card.style.transition = "transform 0.2s ease, opacity 0.2s ease";
+        card.style.transform = "translateX(0px) rotate(0deg)";
+        card.style.opacity = "1";
+        likeTag.classList.remove("is-visible");
+        nopeTag.classList.remove("is-visible");
+      };
+
+      const finalizeSwipe = (direction) => {
+        const moveX = direction === "like" ? 420 : -420;
+        card.style.transition = "transform 0.25s ease, opacity 0.25s ease";
+        card.style.transform = `translateX(${moveX}px) rotate(${direction === "like" ? 16 : -16}deg)`;
+        card.style.opacity = "0";
+        likeTag.classList.toggle("is-visible", direction === "like");
+        nopeTag.classList.toggle("is-visible", direction === "nope");
+        card.setAttribute(
+          "aria-label",
+          direction === "like"
+            ? "Você curtiu a vaga e se candidatou automaticamente."
+            : "Você descartou a vaga."
+        );
+        setTimeout(() => {
+          card.style.transition = "none";
+          card.style.transform = "translateX(0px) rotate(0deg)";
+          card.style.opacity = "1";
+          likeTag.classList.remove("is-visible");
+          nopeTag.classList.remove("is-visible");
+        }, 450);
+      };
+
+      const updateDrag = (deltaX) => {
+        const rotation = clamp(deltaX / 22, -12, 12);
+        card.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+        likeTag.classList.toggle("is-visible", deltaX > 60);
+        nopeTag.classList.toggle("is-visible", deltaX < -60);
+      };
+
+      const onPointerDown = (event) => {
+        isDragging = true;
+        startX = event.clientX;
+        card.classList.add("is-dragging");
+        card.setPointerCapture(event.pointerId);
+      };
+
+      const onPointerMove = (event) => {
+        if (!isDragging) return;
+        currentX = event.clientX;
+        const deltaX = currentX - startX;
+        updateDrag(deltaX);
+      };
+
+      const onPointerUp = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        card.classList.remove("is-dragging");
+        const deltaX = currentX - startX;
+        if (deltaX > 140) {
+          finalizeSwipe("like");
+        } else if (deltaX < -140) {
+          finalizeSwipe("nope");
+        } else {
+          resetCard();
+        }
+      };
+
+      card.addEventListener("pointerdown", onPointerDown);
+      card.addEventListener("pointermove", onPointerMove);
+      card.addEventListener("pointerup", onPointerUp);
+      card.addEventListener("pointercancel", onPointerUp);
+
+      likeButton.addEventListener("click", () => finalizeSwipe("like"));
+      dislikeButton.addEventListener("click", () => finalizeSwipe("nope"));
+    </script>
+  </body>
 </html>
