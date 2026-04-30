@@ -3,780 +3,350 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cadastro de Empresa</title>
-    <style>
-      :root {
-        color-scheme: light;
-        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-        line-height: 1.5;
-        --bg: #f4f6fb;
-        --card: #ffffff;
-        --text: #1b1f3b;
-        --muted: #5f6b7a;
-        --primary: #2257d8;
-        --border: #d9deea;
-        --focus: #ffb703;
     <title>Vagas em Swipe</title>
     <style>
-      :root {
-        color-scheme: light;
+      :raiz {
+        esquema de cores: claro;
         font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
-        background-color: #f3f4f8;
-        color: #171926;
+        cor de fundo: #f3f4f8;
+        cor: #171926;
       }
 
       * {
-        box-sizing: border-box;
+        box-sized: caixa com borda;
+        margem: 0;
+        preenchimento: 0;
       }
 
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--text);
-      }
-
-      .container {
-        max-width: 960px;
-        margin: 40px auto;
-        padding: 0 24px 48px;
-      }
-
-      header {
-        margin-bottom: 24px;
-      }
-
-      h1 {
-        margin-bottom: 8px;
-        font-size: 2rem;
-      }
-
-      p {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .card {
-        background: var(--card);
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        box-shadow: 0 8px 24px rgba(27, 31, 59, 0.08);
-      }
-
-      .card h2 {
-        margin-top: 0;
-        margin-bottom: 16px;
-        font-size: 1.2rem;
-      }
-
-      .grid {
-        display: grid;
-        gap: 16px;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      }
-
-      label {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        font-weight: 600;
-        color: var(--text);
-      }
-
-      label input,
-      label select,
-      label textarea {
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        font-size: 0.95rem;
-        background: #fff;
-      }
-
-      label input:focus,
-      label select:focus,
-      label textarea:focus {
-        outline: 2px solid var(--focus);
-        border-color: transparent;
-      }
-
-      label.full {
-        margin-top: 16px;
-      }
-
-      .hint {
-        font-weight: 400;
-        font-size: 0.85rem;
-        color: var(--muted);
-      }
-
-      .checkbox {
-        flex-direction: row;
-        align-items: center;
-        gap: 8px;
-        font-weight: 500;
-        color: var(--muted);
-      }
-
-      .checkbox input {
-        margin: 0;
-      }
-
-      .actions {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      button {
-        background: var(--primary);
-        color: #fff;
-        border: none;
-        border-radius: 999px;
-        padding: 12px 26px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      button:hover {
-        background: #1b47b3;
-      }
-
-      #form-message {
-        margin: 0;
-        font-weight: 600;
-      }
-
-      #form-message.error {
-        color: #c1121f;
-      }
-
-      #form-message.success {
-        color: #0f8b4c;
-      }
-
-      @media (max-width: 640px) {
-        .actions {
-          flex-direction: column;
-          align-items: flex-start;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #ffffff 0%, #f3f4f8 45%, #eceff6 100%);
-        padding: 32px 24px 48px;
+      corpo {
+        altura mínima: 100vh;
+        fundo: gradiente radial (círculo no topo, #ffffff 0%, #f3f4f8 45%, #eceff6 100%);
+        preenchimento: 32px 24px 48px;
       }
 
       .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1100px;
-        margin: 0 auto 32px;
+        Exibir: flexível;
+        justify-content: espaço-entre;
+        alinhamento-itens: centro;
+        largura máxima: 1100px;
+        margem: 0 auto 32px;
       }
 
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        font-weight: 700;
-        font-size: 1.1rem;
+      .marca {
+        Exibir: flexível;
+        alinhamento-itens: centro;
+        espaçamento: 18px;
+        peso da fonte: 700;
+        tamanho da fonte: 1,1rem;
       }
 
-      .brand__dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #ff6b6b, #ff9f1c);
+      .marca__ponto {
+        largura: 12px;
+        altura: 12px;
+        raio-da-borda: 50%;
+        fundo: gradiente-linear(135deg, #ff6b6b, #ff9f1c);
       }
 
       .topbar__actions {
-        display: flex;
-        gap: 12px;
+        Exibir: flexível;
+        espaçamento: 12px;
       }
 
-      .icon-button {
-        border: none;
-        background: #ffffff;
-        border-radius: 999px;
-        padding: 8px 16px;
-        font-weight: 600;
+      .ícone-botão {
+        fronteira: nenhuma;
+        fundo: #ffffff;
+        raio-da-borda: 999px;
+        preenchimento: 8px 16px;
+        peso da fonte: 600;
         box-shadow: 0 12px 24px rgba(23, 25, 38, 0.08);
-        cursor: pointer;
+        cursor: ponteiro;
       }
 
       .layout {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: grid;
-        gap: 32px;
+        largura máxima: 1100px;
+        margem: 0 automático;
+        Exibir: grade;
+        espaçamento: 32px;
       }
 
       .intro {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
+        Exibir: flexível;
+        flex-direction: coluna;
+        espaçamento: 16px;
       }
 
       .intro h1 {
-        font-size: clamp(2rem, 4vw, 3rem);
+        tamanho-da-fonte: clamp(2rem, 4vw, 3rem);
       }
 
       .intro p {
-        color: #4a4f63;
-        max-width: 620px;
-        line-height: 1.6;
+        cor: #4a4f63;
+        largura máxima: 620px;
+        altura da linha: 1,6;
       }
 
       .intro__legend {
-        display: flex;
-        gap: 24px;
-        flex-wrap: wrap;
+        Exibir: flexível;
+        espaço: 24px;
+        flex-wrap: envolver;
       }
 
       .intro__legend div {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        font-weight: 600;
-        color: #3b3f52;
+        Exibir: flexível;
+        alinhamento-itens: centro;
+        espaçamento: 18px;
+        peso da fonte: 600;
+        cor: #3b3f52;
       }
 
-      .pill {
-        padding: 6px 14px;
-        border-radius: 999px;
-        font-size: 0.85rem;
-        color: #ffffff;
+      .pílula {
+        preenchimento: 6px 14px;
+        raio-da-borda: 999px;
+        tamanho da fonte: 0,85rem;
+        cor: #ffffff;
       }
 
-      .pill--danger {
-        background: #ff6b6b;
+      .pílula--perigo {
+        fundo: #ff6b6b;
       }
 
-      .pill--success {
-        background: #2ec4b6;
+      .pílula--sucesso {
+        fundo: #2ec4b6;
       }
 
       .card-stack {
-        display: flex;
-        justify-content: center;
+        Exibir: flexível;
+        justificar-conteúdo: centralizado;
       }
 
       .job-card {
-        width: min(720px, 100%);
-        background: #ffffff;
-        border-radius: 28px;
+        largura: min(720px, 100%);
+        fundo: #ffffff;
+        raio da borda: 28px;
         box-shadow: 0 24px 60px rgba(23, 25, 38, 0.15);
-        overflow: hidden;
-        position: relative;
-        touch-action: pan-y;
-        transition: transform 0.2s ease, opacity 0.2s ease;
-        cursor: grab;
+        overflow: oculto;
+        posição: relativa;
+        ação por toque: panorâmica;
+        transição: transformar 0,2s suavizar, opacidade 0,2s suavizar;
+        cursor: agarrar;
       }
 
       .job-card.is-dragging {
-        cursor: grabbing;
+        cursor: agarrando;
       }
 
       .job-card__overlay {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        display: flex;
-        justify-content: space-between;
-        pointer-events: none;
+        posição: absoluta;
+        topo: 20px;
+        esquerda: 20px;
+        direita: 20px;
+        Exibir: flexível;
+        justify-content: espaço-entre;
+        eventos-ponteiro: nenhum;
       }
 
       .swipe-tag {
-        padding: 8px 14px;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        opacity: 0;
-        transform: scale(0.95);
-        transition: opacity 0.2s ease, transform 0.2s ease;
+        preenchimento: 8px 14px;
+        raio-da-borda: 999px;
+        tamanho da fonte: 0,8rem;
+        peso da fonte: 700;
+        espaçamento entre letras: 0,08em;
+        opacidade: 0;
+        transformar: escala(0,95);
+        transição: opacidade 0,2s suavização, transformação 0,2s suavização;
       }
 
       .swipe-tag--like {
-        background: rgba(46, 196, 182, 0.15);
-        color: #2ec4b6;
-        border: 1px solid rgba(46, 196, 182, 0.4);
+        fundo: rgba(46, 196, 182, 0.15);
+        cor: #2ec4b6;
+        borda: 1px sólida rgba(46, 196, 182, 0.4);
       }
 
-      .swipe-tag--nope {
-        background: rgba(255, 107, 107, 0.15);
-        color: #ff6b6b;
-        border: 1px solid rgba(255, 107, 107, 0.4);
+      .swipe-tag--não {
+        fundo: rgba(255, 107, 107, 0.15);
+        cor: #ff6b6b;
+        borda: 1px sólida rgba(255, 107, 107, 0.4);
       }
 
       .swipe-tag.is-visible {
-        opacity: 1;
-        transform: scale(1);
+        opacidade: 1;
+        transformar: escala(1);
       }
 
       .job-card__media {
-        position: relative;
-        height: 220px;
+        posição: relativa;
+        altura: 220px;
       }
 
       .job-card__media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        largura: 100%;
+        altura: 100%;
+        ajuste ao objeto: capa;
       }
 
       .job-card__badge {
-        position: absolute;
-        bottom: 16px;
-        left: 16px;
-        background: rgba(23, 25, 38, 0.85);
-        color: #ffffff;
-        padding: 6px 14px;
-        border-radius: 999px;
-        font-size: 0.8rem;
+        posição: absoluta;
+        parte inferior: 16px;
+        esquerda: 16px;
+        fundo: rgba(23, 25, 38, 0.85);
+        cor: #ffffff;
+        preenchimento: 6px 14px;
+        raio-da-borda: 999px;
+        tamanho da fonte: 0,8rem;
       }
 
       .job-card__content {
-        padding: 24px 28px 28px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+        preenchimento: 24px 28px 28px;
+        Exibir: flexível;
+        flex-direction: coluna;
+        espaço: 20px;
       }
 
       .job-card__header {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+        Exibir: flexível;
+        flex-direction: coluna;
+        espaçamento: 8px;
       }
 
       .job-card__header h2 {
-        font-size: 1.5rem;
+        tamanho da fonte: 1,5rem;
       }
 
       .job-card__company {
-        color: #5a6075;
-        font-weight: 600;
+        cor: #5a6075;
+        peso da fonte: 600;
       }
 
       .job-card__salary {
-        align-self: flex-start;
-        background: #f4f5ff;
-        color: #4b4fe2;
-        padding: 6px 12px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 0.95rem;
+        alinhamento-próprio: início flexível;
+        fundo: #f4f5ff;
+        cor: #4b4fe2;
+        preenchimento: 6px 12px;
+        raio da borda: 12px;
+        peso da fonte: 700;
+        tamanho da fonte: 0,95rem;
       }
 
       .job-card__description {
-        color: #4a4f63;
-        line-height: 1.6;
+        cor: #4a4f63;
+        altura da linha: 1,6;
       }
 
       .job-card__details {
-        display: grid;
+        Exibir: grade;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 16px;
+        espaçamento: 16px;
       }
 
-      .label {
-        display: block;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #8a90a8;
-        margin-bottom: 6px;
+      .rótulo {
+        exibir: bloco;
+        tamanho da fonte: 0,75rem;
+        text-transform: maiúsculas;
+        espaçamento entre letras: 0,08em;
+        cor: #8a90a8;
+        margem-inferior: 6px;
       }
 
-      .job-card__details strong {
-        font-size: 0.95rem;
+      .job-card__details forte {
+        tamanho da fonte: 0,95rem;
       }
 
       .job-card__actions {
-        display: flex;
-        gap: 18px;
-        justify-content: center;
-        margin-top: 10px;
+        Exibir: flexível;
+        espaçamento: 18px;
+        justificar-conteúdo: centralizado;
+        margem superior: 10px;
       }
 
-      .action {
-        width: 68px;
-        height: 68px;
-        border: none;
-        border-radius: 50%;
-        font-size: 1.8rem;
-        font-weight: 700;
-        line-height: 1;
-        cursor: pointer;
-        display: grid;
-        place-items: center;
+      .Ação {
+        largura: 68px;
+        altura: 68px;
+        fronteira: nenhuma;
+        raio-da-borda: 50%;
+        tamanho da fonte: 1,8rem;
+        peso da fonte: 700;
+        altura da linha: 1;
+        cursor: ponteiro;
+        Exibir: grade;
+        itens-localizados: centro;
         box-shadow: 0 10px 22px rgba(23, 25, 38, 0.12);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transição: transformar 0,2s com suavização, sombra da caixa 0,2s com suavização;
       }
 
-      .action:hover {
-        transform: translateY(-2px);
+      .ação:hover {
+        transformar: translateY(-2px);
         box-shadow: 0 14px 24px rgba(23, 25, 38, 0.16);
       }
 
-      .action--dislike {
-        background: #fff1f1;
-        color: #ff6b6b;
+      .ação--desgosto {
+        fundo: #fff1f1;
+        cor: #ff6b6b;
       }
 
-      .action--like {
-        background: #e7fbf7;
-        color: #2ec4b6;
+      .ação--como {
+        fundo: #e7fbf7;
+        cor: #2ec4b6;
       }
 
-      .flow {
-        background: #ffffff;
-        border-radius: 24px;
-        padding: 24px 28px;
+      .fluxo {
+        fundo: #ffffff;
+        raio da borda: 24px;
+        preenchimento: 24px 28px;
         box-shadow: 0 16px 32px rgba(23, 25, 38, 0.08);
       }
 
       .flow h3 {
-        font-size: 1.25rem;
-        margin-bottom: 16px;
+        tamanho da fonte: 1,25rem;
+        margem-inferior: 16px;
       }
 
       .flow__steps {
-        display: grid;
-        gap: 12px;
-        color: #4a4f63;
-        line-height: 1.6;
-        padding-left: 18px;
+        Exibir: grade;
+        espaçamento: 12px;
+        cor: #4a4f63;
+        altura da linha: 1,6;
+        preenchimento à esquerda: 18px;
       }
 
       @media (min-width: 900px) {
         .layout {
           grid-template-columns: minmax(260px, 1fr) minmax(360px, 2fr);
-          grid-template-areas:
-            "intro card"
-            "flow card";
-          align-items: start;
+          áreas-modelo-de-grade:
+            "cartão de apresentação"
+            "cartão de fluxo";
+          alinhar-itens: início;
         }
 
         .intro {
-          grid-area: intro;
+          área-da-grade: introdução;
         }
 
         .card-stack {
-          grid-area: card;
+          área-da-grade: cartão;
         }
 
-        .flow {
-          grid-area: flow;
+        .fluxo {
+          área-da-grade: fluxo;
         }
       }
 
       @media (max-width: 720px) {
-        body {
-          padding: 24px 16px 40px;
+        corpo {
+          preenchimento: 24px 16px 40px;
         }
 
         .topbar {
-          flex-direction: column;
-          gap: 16px;
+          flex-direction: coluna;
+          espaçamento: 16px;
         }
 
         .job-card__content {
-          padding: 20px;
+          preenchimento: 20px;
         }
       }
     </style>
   </head>
   <body>
-    <main class="container">
-      <header>
-        <h1>Cadastro de Empresa</h1>
-        <p>Preencha os dados abaixo para cadastrar sua empresa no sistema.</p>
-      </header>
-
-      <form id="company-form" novalidate>
-        <section class="card">
-          <h2>Dados da empresa</h2>
-          <div class="grid">
-            <label>
-              Razão social
-              <input type="text" name="razaoSocial" required />
-            </label>
-            <label>
-              Nome fantasia
-              <input type="text" name="nomeFantasia" required />
-            </label>
-            <label>
-              CNPJ
-              <input
-                type="text"
-                name="cnpj"
-                inputmode="numeric"
-                placeholder="00.000.000/0000-00"
-                required
-              />
-            </label>
-            <label>
-              Segmento da empresa
-              <select name="segmento" required>
-                <option value="">Selecione</option>
-                <option>Hotel</option>
-                <option>Pousada</option>
-                <option>Restaurante</option>
-                <option>Agência de turismo</option>
-                <option>Empresa de eventos</option>
-                <option>Outro</option>
-              </select>
-            </label>
-          </div>
-          <label class="full">
-            Descrição da empresa (opcional, até 500 caracteres)
-            <textarea name="descricao" maxlength="500" rows="4"></textarea>
-          </label>
-        </section>
-
-        <section class="card">
-          <h2>Endereço</h2>
-          <div class="grid">
-            <label>
-              CEP
-              <input
-                type="text"
-                name="cep"
-                inputmode="numeric"
-                placeholder="00000-000"
-                required
-              />
-              <span class="hint">Preenchimento automático ao informar o CEP.</span>
-            </label>
-            <label>
-              Logradouro
-              <input type="text" name="logradouro" required />
-            </label>
-            <label>
-              Número
-              <input type="text" name="numero" required />
-            </label>
-            <label>
-              Complemento
-              <input type="text" name="complemento" />
-            </label>
-            <label>
-              Bairro
-              <input type="text" name="bairro" required />
-            </label>
-            <label>
-              Cidade
-              <input type="text" name="cidade" value="Foz do Iguaçu" required />
-            </label>
-            <label>
-              Estado (UF)
-              <input type="text" name="uf" maxlength="2" required />
-            </label>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Contato da empresa</h2>
-          <div class="grid">
-            <label>
-              Nome do responsável legal
-              <input type="text" name="responsavel" required />
-            </label>
-            <label>
-              Telefone (com DDD)
-              <input type="tel" name="telefone" placeholder="(45) 00000-0000" required />
-            </label>
-            <label>
-              WhatsApp
-              <input type="tel" name="whatsapp" placeholder="(45) 00000-0000" />
-              <span class="checkbox">
-                <input type="checkbox" id="usar-telefone" />
-                <label for="usar-telefone">usar o mesmo número</label>
-              </span>
-            </label>
-            <label>
-              E-mail corporativo
-              <input type="email" name="emailCorporativo" required />
-            </label>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Acesso ao sistema</h2>
-          <div class="grid">
-            <label>
-              E-mail de acesso
-              <input type="email" name="emailAcesso" required />
-              <span class="checkbox">
-                <input type="checkbox" id="usar-email" />
-                <label for="usar-email">usar o e-mail corporativo</label>
-              </span>
-            </label>
-            <label>
-              Senha
-              <input type="password" name="senha" minlength="8" required />
-            </label>
-            <label>
-              Confirmar senha
-              <input type="password" name="confirmarSenha" minlength="8" required />
-            </label>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Informações adicionais (opcional)</h2>
-          <div class="grid">
-            <label>
-              Site da empresa
-              <input type="url" name="site" placeholder="https://" />
-            </label>
-            <label>
-              Instagram
-              <input type="text" name="instagram" placeholder="@usuario" />
-            </label>
-            <label>
-              Facebook
-              <input type="text" name="facebook" placeholder="facebook.com/suaempresa" />
-            </label>
-            <label>
-              Logo da empresa
-              <input type="file" name="logo" accept="image/*" />
-            </label>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Termos e confirmação</h2>
-          <label class="checkbox">
-            <input type="checkbox" name="termos" required />
-            Aceito os termos de uso e a política de privacidade.
-          </label>
-        </section>
-
-        <div class="actions">
-          <button type="submit">Cadastrar empresa</button>
-          <p id="form-message" role="status" aria-live="polite"></p>
-        </div>
-      </form>
-    </main>
-
-    <script>
-      const form = document.querySelector("#company-form");
-      const message = document.querySelector("#form-message");
-      const cepInput = form.querySelector("[name=cep]");
-      const cidadeInput = form.querySelector("[name=cidade]");
-      const ufInput = form.querySelector("[name=uf]");
-      const logradouroInput = form.querySelector("[name=logradouro]");
-      const bairroInput = form.querySelector("[name=bairro]");
-      const usarTelefone = document.querySelector("#usar-telefone");
-      const usarEmail = document.querySelector("#usar-email");
-      const telefoneInput = form.querySelector("[name=telefone]");
-      const whatsappInput = form.querySelector("[name=whatsapp]");
-      const emailCorporativoInput = form.querySelector("[name=emailCorporativo]");
-      const emailAcessoInput = form.querySelector("[name=emailAcesso]");
-
-      const setMessage = (text, type = "") => {
-        message.textContent = text;
-        message.className = type;
-      };
-
-      const normalizeCep = (value) => value.replace(/\D/g, "").slice(0, 8);
-
-      const preencherEndereco = async (cep) => {
-        if (cep.length !== 8) {
-          return;
-        }
-
-        try {
-          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-          if (!response.ok) {
-            throw new Error("CEP não encontrado.");
-          }
-          const data = await response.json();
-          if (data.erro) {
-            throw new Error("CEP inválido.");
-          }
-
-          logradouroInput.value = data.logradouro || "";
-          bairroInput.value = data.bairro || "";
-          cidadeInput.value = data.localidade || "";
-          ufInput.value = data.uf || "";
-        } catch (error) {
-          setMessage("Não foi possível localizar o CEP informado.", "error");
-        }
-      };
-
-      cepInput.addEventListener("blur", () => {
-        const cep = normalizeCep(cepInput.value);
-        cepInput.value = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
-        preencherEndereco(cep);
-      });
-
-      usarTelefone.addEventListener("change", () => {
-        whatsappInput.value = usarTelefone.checked ? telefoneInput.value : "";
-      });
-
-      telefoneInput.addEventListener("input", () => {
-        if (usarTelefone.checked) {
-          whatsappInput.value = telefoneInput.value;
-        }
-      });
-
-      usarEmail.addEventListener("change", () => {
-        emailAcessoInput.value = usarEmail.checked ? emailCorporativoInput.value : "";
-      });
-
-      emailCorporativoInput.addEventListener("input", () => {
-        if (usarEmail.checked) {
-          emailAcessoInput.value = emailCorporativoInput.value;
-        }
-      });
-
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        setMessage("");
-
-        const senha = form.querySelector("[name=senha]").value;
-        const confirmarSenha = form.querySelector("[name=confirmarSenha]").value;
-        const cidade = cidadeInput.value.trim().toLowerCase();
-
-        if (senha.length < 8) {
-          setMessage("A senha deve conter pelo menos 8 caracteres.", "error");
-          return;
-        }
-
-        if (senha !== confirmarSenha) {
-          setMessage("As senhas não conferem.", "error");
-          return;
-        }
-
-        if (cidade !== "foz do iguaçu" && cidade !== "foz do iguacu") {
-          setMessage("A sede da empresa deve ser em Foz do Iguaçu.", "error");
-          return;
-        }
-
-        if (!form.checkValidity()) {
-          setMessage("Preencha todos os campos obrigatórios corretamente.", "error");
-          return;
-        }
-
-        setMessage("Cadastro validado! Pronto para enviar ao backend.", "success");
-      });
-    </script>
-  </body>
-</html>
     <header class="topbar">
       <div class="brand">
         <span class="brand__dot"></span>
@@ -828,7 +398,7 @@
           <div class="job-card__content">
             <header class="job-card__header">
               <div>
-                <h2>Product Designer Pleno</h2>
+                <h2>Designer de Produto Pleno</h2>
                 <p class="job-card__company">Studio Aurora • Tecnologia</p>
               </div>
               <div class="job-card__salary">R$ 8.500 – R$ 10.000</div>
@@ -879,9 +449,9 @@
       const nopeTag = document.getElementById("swipe-nope");
       const likeButton = document.querySelector(".action--like");
       const dislikeButton = document.querySelector(".action--dislike");
-      let startX = 0;
-      let currentX = 0;
-      let isDragging = false;
+      seja startX = 0;
+      seja currentX = 0;
+      seja isDragging = falso;
 
       const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
       const resetCard = () => {
@@ -893,20 +463,20 @@
       };
 
       const finalizeSwipe = (direction) => {
-        const moveX = direction === "like" ? 420 : -420;
+        const moveX = direção === "como" ? 420 : -420;
         card.style.transition = "transform 0.25s ease, opacity 0.25s ease";
         card.style.transform = `translateX(${moveX}px) rotate(${direction === "like" ? 16 : -16}deg)`;
         card.style.opacity = "0";
         likeTag.classList.toggle("is-visible", direction === "like");
         nopeTag.classList.toggle("is-visible", direction === "nope");
         card.setAttribute(
-          "aria-label",
-          direction === "like"
+          "rótulo aria",
+          direção === "como"
             ? "Você curtiu a vaga e se candidatou automaticamente."
             : "Você descartou a vaga."
         );
         setTimeout(() => {
-          card.style.transition = "none";
+          card.style.transition = "nenhum";
           card.style.transform = "translateX(0px) rotate(0deg)";
           card.style.opacity = "1";
           likeTag.classList.remove("is-visible");
@@ -915,36 +485,36 @@
       };
 
       const updateDrag = (deltaX) => {
-        const rotation = clamp(deltaX / 22, -12, 12);
+        const rotação = clamp(deltaX / 22, -12, 12);
         card.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
         likeTag.classList.toggle("is-visible", deltaX > 60);
         nopeTag.classList.toggle("is-visible", deltaX < -60);
       };
 
       const onPointerDown = (event) => {
-        isDragging = true;
-        startX = event.clientX;
+        isDragging = verdadeiro;
+        startX = evento.clientX;
         card.classList.add("is-dragging");
         card.setPointerCapture(event.pointerId);
       };
 
       const onPointerMove = (event) => {
-        if (!isDragging) return;
-        currentX = event.clientX;
+        se (!isDragging) retorne;
+        currentX = evento.clientX;
         const deltaX = currentX - startX;
-        updateDrag(deltaX);
+        atualizarArrastar(deltaX);
       };
 
       const onPointerUp = () => {
-        if (!isDragging) return;
-        isDragging = false;
+        se (!isDragging) retorne;
+        isDragging = falso;
         card.classList.remove("is-dragging");
         const deltaX = currentX - startX;
-        if (deltaX > 140) {
-          finalizeSwipe("like");
-        } else if (deltaX < -140) {
-          finalizeSwipe("nope");
-        } else {
+        se (deltaX > 140) {
+          finalizeDeslize("curtir");
+        } senão se (deltaX < -140) {
+          finalizeSwipe("não");
+        } outro {
           resetCard();
         }
       };
